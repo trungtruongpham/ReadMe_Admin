@@ -71,7 +71,7 @@ export default function LoginPage() {
               type="submit"
               className="bg-zinc-800 hover:bg-zinc-900 rounded-lg py-2 px-4 text-white text-lg"
             >
-              Login
+              Login e
             </button>
           </form>
         </div>
