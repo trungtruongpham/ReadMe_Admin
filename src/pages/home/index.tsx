@@ -1,4 +1,4 @@
-import { Link, Outlet, Route, Routes } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import logo from "../../assets/book-stack.png";
 import dashboard from "../../assets/dashboard.png";
 import data from "../../assets/folder.png";
@@ -6,11 +6,11 @@ import data from "../../assets/folder.png";
 export default function HomePage() {
   return (
     <>
-      <div className="w-full h-full flex">
-        <div id="menu" className="w-1/6 h-full min-h-screen bg-slate-100 pt-8">
+      <div className="flex w-full h-full min-h-vh">
+        <div id="menu" className="w-1/6 h-vh min-h-screen bg-slate-100 pt-8 ">
           <div id="logo-section" className="m-auto w-fit space-y-4">
             <img src={logo} alt="App logo" className="w-16 h-16 ml-8" />
-            <p className="text-xl font-extrabold">ReadNow Admin</p>
+            <p className="text-xl font-extrabold font-mono">ReadNow Admin</p>
           </div>
           <div
             id="menu-section"
@@ -51,7 +51,10 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <div id="main" className="w-full h-full m-4 p-4 border border-zinc-400 rounded-md">
+        <div
+          id="main"
+          className="w-5/6 h-full m-4 p-4 border border-zinc-400 rounded-md"
+        >
           <Outlet></Outlet>
         </div>
       </div>

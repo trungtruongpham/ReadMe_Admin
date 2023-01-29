@@ -21,7 +21,7 @@ export default function LoginPage() {
       })
       .then((res) => {
         console.log(res);
-        window.location.href = "/home";
+        window.location.href = "/home/dashboard";
       })
       .catch((err) => {
         console.log(err);

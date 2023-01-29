@@ -4,13 +4,12 @@ export default function Data() {
   return (
     <>
       <div className="">
-        <p>Data</p>
-      </div>
-      <div className="flex flex-col">
-        <input type="text" name="name" id="data-name" placeholder="Name" />
-        <table id="data-grid" className="">
+        <div className="flex text-center justify-center">
+          <p className="text-2xl font-mono font-bold">Data</p>
+        </div>
+        <div className="flex flex-col gap-4">
           <Outlet></Outlet>
-        </table>
+        </div>
       </div>
     </>
   );
