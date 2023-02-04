@@ -20,7 +20,7 @@ export default function LoginPage() {
         password: data.password,
       })
       .then((res) => {
-        console.log(res);
+        localStorage.setItem("token", res.data.accessToken);
         window.location.href = "/home/dashboard";
       })
       .catch((err) => {
@@ -33,11 +33,11 @@ export default function LoginPage() {
       <div className="flex flex-col w-full h-screen content-center">
         <div className="w-96 m-auto rounded-lg bg-slate-100 space-y-4 p-16">
           <div id="social-btns" className="space-y-4 ">
-            <button className="flex space-x-4 rounded m-auto border border-b-gray-300 w-64 py-2 px-4">
+            <button className="flex space-x-4 bg-slate-200 rounded-lg m-auto border border-b-gray-300 w-64 py-2 px-4 hover:bg-slate-600">
               <img src={gg} alt="Google logo" className="w-8 h-8" />
               <p>Sign in with Google</p>{" "}
             </button>
-            <button className="flex space-x-4 rounded m-auto border border-b-gray-300 w-64 py-2 px-4">
+            <button className="flex space-x-4 bg-slate-200 rounded-lg m-auto border border-b-gray-300 w-64 py-2 px-4 hover:bg-slate-600">
               <img src={fb} alt="Facebook logo" className="w-8 h-8" />
               <span>Sign in with Facebook</span>{" "}
             </button>
@@ -66,10 +66,12 @@ export default function LoginPage() {
               className="focus:outline-none bg-transparent border-b border-b-gray-200"
               {...register("password", { required: true })}
             />
-            {errors.password && <span>Username and password is required</span>}
+            {(errors.password || errors.username) && (
+              <span className="my-4 bg-red-500 rounded p-2">Username and Password is required</span>
+            )}
             <button
               type="submit"
-              className="bg-zinc-800 hover:bg-zinc-900 rounded-lg py-2 px-4 text-white text-lg"
+              className="border border-b-gray-300 hover:bg-slate-600 bg-slate-200  rounded-lg py-2 px-4 text-lg"
             >
               Login
             </button>

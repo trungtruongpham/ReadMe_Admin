@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLoaderData, useParams } from "react-router-dom";
+import axiosPublicClient from "../../utils/services/axiosPublicClient";
 import DynamicFormData from "../form";
 
 export default function TableData() {
@@ -7,6 +8,19 @@ export default function TableData() {
   type keys = keyof typeof loaderData.data.items[0];
   const headers = Object.keys(loaderData.data.items[0]).sort();
   const [isShowForm, setIsShowForm] = useState(false);
+  const { entity } = useParams();
+  const [data, setData] = useState<any>();
+  const [currentPage, setCurrentPage] = useState<number>(
+    loaderData.data.pageNumber
+  );
+
+  useEffect(() => {
+    axiosPublicClient
+      .get(`/${entity}/?pageNumber=${currentPage}&pageSize=5`)
+      .then((res) => {
+        setData(res.data);
+      });
+  }, [currentPage]);
 
   const renderHeaderTable = headers.map((header, index) => {
     return (
@@ -51,16 +65,19 @@ export default function TableData() {
             Number(headers.length + 1)
           }
         >
-          <p>{Number(indexRow + 1)}</p>
+          <p>{Number(indexRow + 1 + (currentPage - 1) * 5)}</p>
         </td>
         {row}
       </tr>
     );
   };
 
-  const renderBodyTable = loaderData.data.items.map((data: any, index: any) => {
-    return renderRowTable(data, index);
-  });
+  const renderBodyTable =
+    data !== undefined &&
+    data.items.map((data: any, index: any) => {
+      return renderRowTable(data, index);
+    });
+
   return (
     <div className="flex flex-col gap-4">
       <div className="space-x-4">
@@ -99,6 +116,56 @@ export default function TableData() {
         </thead>
         <tbody className="w-full">{renderBodyTable}</tbody>
       </table>
+      <div className="flex flex-row-reverse w-full gap-4">
+        {data !== undefined && (
+          <div className="pt-2">
+            <p>Total items: {data.totalCount}</p>
+          </div>
+        )}
+        <div className=" flex gap-4 p-2 border rounded">
+          <button
+            className="border border-cyan-900 rounded"
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </button>
+          <p>{currentPage}</p>
+          <button
+            className="border border-cyan-900 rounded"
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={data != undefined && currentPage == data.totalPages}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
