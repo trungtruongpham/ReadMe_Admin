@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublicClient = axios.create({
-    baseURL: "http://14.225.192.142/api",
+    baseURL: "https://14.225.192.142/api",
     timeout: 100000,
     headers: {
         "Access-Control-Allow-Origin": "*"
