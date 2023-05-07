@@ -1,15 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Menu from "../../components/menu";
 import DefaultLayout from "../../layout/DefaultLayout";
 
-export default function HomePage() {
+export default function Forms() {
   return (
     <DefaultLayout>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div
-          id="main"
-          className="w-full h-full rounded-md overflow-auto p-4"
-        >
+        <div id="forms" className="w-full h-full rounded-md overflow-auto p-4">
           <Outlet></Outlet>
         </div>
       </div>

@@ -5,7 +5,7 @@ export default function Data() {
     <>
       <div className="">
         <div className="flex text-center justify-center">
-          <p className="text-2xl font-mono font-bold">Data</p>
+          <p className="font-mono font-bold text-title-xl2">Data</p>
         </div>
         <div className="flex flex-col gap-4">
           <Outlet></Outlet>

@@ -1,33 +1,83 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
+import axiosPrivateClient from "../../utils/services/axiosPrivateClient";
 import axiosPublicClient from "../../utils/services/axiosPublicClient";
 import DynamicFormData from "../form";
+import Popup from "../popupData";
 
 export default function TableData() {
   const loaderData = useLoaderData() as any;
-  type keys = keyof typeof loaderData.data.items[0];
-  const headers = Object.keys(loaderData.data.items[0]).sort();
   const [isShowForm, setIsShowForm] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [formData, setFormData] = useState(loaderData.data.items[0]);
+  const [updateDataIndex, setUpdateDataIndex] = useState(0);
   const { entity } = useParams();
   const [data, setData] = useState<any>();
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState<number>(
     loaderData.data.pageNumber
   );
+  type keys = keyof typeof loaderData.data.items[0];
+  const headers = Object.keys(loaderData.data.items[0]).sort();
 
   useEffect(() => {
     axiosPublicClient
-      .get(`/${entity}/?pageNumber=${currentPage}&pageSize=5`)
+      .get(
+        `/${entity}/search?IsFromClient=false&name=${searchValue}&pageNumber=${currentPage}&pageSize=5`
+      )
       .then((res) => {
         setData(res.data);
       });
-  }, [currentPage]);
+  }, [currentPage, searchValue]);
+
+  const handleSearchValueChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchValue(event.target.value);
+    setIsUpdate(true);
+  };
+
+  const handleUpdateClick = (index: number) => {
+    setUpdateDataIndex(index);
+    if (!isShowForm) {
+      setFormData(
+        searchValue === "" ? loaderData.data.items[index] : data.items[index]
+      );
+      setIsUpdate(true);
+    }
+
+    setIsShowForm(!isShowForm);
+  };
+
+  const handleAddData = () => {
+    setIsShowForm(!isShowForm);
+    setIsUpdate(false);
+  };
+
+  const handleDeleteData = (id: string) => {
+    axiosPrivateClient
+      .delete("/" + entity + "?id=" + id, {
+        headers: {
+          "Content-Type": "text/plain",
+        },
+      })
+      .then((res) => {
+        if (res.status !== 200) {
+        }
+
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const renderHeaderTable = headers.map((header, index) => {
     return (
       <th
         className={
           "w-full border-r border-cyan-900 last:border-0 text-center max-w-1/" +
-          Number(headers.length + 1)
+          Number(headers.length + 2)
         }
         key={index}
         colSpan={1}
@@ -43,12 +93,15 @@ export default function TableData() {
         <>
           <td
             className={
-              "flex p-4 max-h-[200px] border-r border-cyan-900 last:border-0 overflow-hidden text-ellipsis justify-center text-center w-full items-center max-w-1/" +
-              Number(headers.length + 1)
+              "flex space-x-2 p-2 max-h-[300px] max-w-[300px] border-r border-cyan-900 last:border-0 overflow-x-auto overflow-y-hidden text-ellipsis justify-center text-center w-full items-center max-w-1/" +
+              Number(headers.length + 2)
             }
             key={index}
           >
-            <p className="items-center">{data[header as keys]}</p>
+            <span className="items-center text-ellipsis max-h-100">{data[header as keys]}</span>
+            <Popup buttonText="Open">
+              <p>{data[header as keys]}</p>
+            </Popup>
           </td>
         </>
       );
@@ -62,12 +115,31 @@ export default function TableData() {
         <td
           className={
             "flex p-4 overflow-hidden border-r border-cyan-900 text-ellipsis justify-center text-center w-full items-center max-w-1/" +
-            Number(headers.length + 1)
+            Number(headers.length + 2)
           }
         >
           <p>{Number(indexRow + 1 + (currentPage - 1) * 5)}</p>
         </td>
         {row}
+        <td
+          className={
+            "flex flex-col gap-2 p-4 m-auto overflow-hidden text-ellipsis justify-center text-center w-full items-center max-w-1/" +
+            Number(headers.length + 2)
+          }
+        >
+          <button
+            className="min-w-[100px] p-2 bg-warning rounded font-semibold text-white"
+            onClick={() => handleUpdateClick(indexRow)}
+          >
+            Update
+          </button>
+          <button
+            className="min-w-[100px] p-2 bg-danger rounded font-semibold text-white"
+            onClick={() => handleDeleteData(data.id)}
+          >
+            Delete
+          </button>
+        </td>
       </tr>
     );
   };
@@ -87,42 +159,59 @@ export default function TableData() {
           name="name"
           id="data-name"
           placeholder="Name"
+          value={searchValue}
+          onChange={handleSearchValueChange}
         />
         <button
           className="border p-2 rounded-xl bg-slate-500"
-          onClick={() => setIsShowForm(!isShowForm)}
+          onClick={handleAddData}
         >
           Add new data
         </button>
       </div>
-      {isShowForm && <DynamicFormData props={loaderData}></DynamicFormData>}
+      {isShowForm && (
+        <DynamicFormData
+          data={formData}
+          updateIndex={updateDataIndex}
+          isUpdate={isUpdate}
+        ></DynamicFormData>
+      )}
       <table
         id="data-grid"
         className="border border-cyan-700 border-separate rounded-xl"
       >
         <thead>
-          <tr className={"flex gap-4 w-full border-b border-cyan-900 py-2"}>
+          <tr className={"flex w-full border-b border-cyan-900 py-2"}>
             <th
               className={
                 "w-full text-center border-r border-cyan-900 last:border-0 max-w-1/" +
-                Number(headers.length + 1)
+                Number(headers.length + 2)
               }
               colSpan={1}
             >
               Index
             </th>
             {renderHeaderTable}
+            <th
+              className={
+                "w-full text-center border-r border-cyan-900 last:border-0 max-w-1/" +
+                Number(headers.length + 2)
+              }
+              colSpan={1}
+            >
+              Action
+            </th>
           </tr>
         </thead>
         <tbody className="w-full">{renderBodyTable}</tbody>
       </table>
-      <div className="flex flex-row-reverse w-full gap-4">
+      <div className="flex flex-row-reverse w-full gap-4 content-center items-center">
         {data !== undefined && (
-          <div className="pt-2">
+          <div className="">
             <p>Total items: {data.totalCount}</p>
           </div>
         )}
-        <div className=" flex gap-4 p-2 border rounded">
+        <div className="flex gap-4 p-2 m-4 border rounded">
           <button
             className="border border-cyan-900 rounded"
             onClick={() => setCurrentPage(currentPage - 1)}
@@ -147,7 +236,7 @@ export default function TableData() {
           <button
             className="border border-cyan-900 rounded"
             onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={data != undefined && currentPage == data.totalPages}
+            disabled={data !== undefined && currentPage === data.totalPages}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublicClient = axios.create({
-    baseURL: "https://readnowapi1.azurewebsites.net/api",
+    baseURL: "http://14.225.192.142/api",
     timeout: 100000,
     headers: {
         "Access-Control-Allow-Origin": "*"

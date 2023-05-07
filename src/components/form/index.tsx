@@ -3,8 +3,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import axiosPrivateClient from "../../utils/services/axiosPrivateClient";
 
-export default function DynamicFormData(props: any) {
-  const headers = Object.keys(props.props.data.items[0]).sort();
+interface FormDataTrops {
+  data: any;
+  updateIndex: number;
+  isUpdate: boolean;
+}
+
+export default function DynamicFormData(props: FormDataTrops) {
+  const headers = Object.keys(props.data).sort();
   const location = useLocation();
   var entity = location.pathname.split("/")[3];
 
@@ -14,29 +20,52 @@ export default function DynamicFormData(props: any) {
     reset,
     formState,
     formState: { isSubmitSuccessful },
-  } = useForm<any>({});
+  } = useForm<any>({
+    defaultValues: props.isUpdate ? props.data : {},
+  });
 
   const onSubmit: SubmitHandler<any> = (data) => {
     const formData = jsonToFormData(data);
 
-    axiosPrivateClient
-      .post("/" + entity, formData, {
-        headers: {
-          "Content-Type":
-            entity === "book"
-              ? "multipart/form-data; boundary=something"
-              : "application/json",
-        },
-      })
-      .then((res) => {
-        if (res.status !== 200) {
-        }
+    if (props.isUpdate) {
+      axiosPrivateClient
+        .put("/" + entity, formData, {
+          headers: {
+            "Content-Type":
+              entity === "book"
+                ? "multipart/form-data; boundary=something"
+                : "application/json",
+          },
+        })
+        .then((res) => {
+          if (res.status !== 200) {
+          }
 
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      axiosPrivateClient
+        .post("/" + entity, formData, {
+          headers: {
+            "Content-Type":
+              entity === "book"
+                ? "multipart/form-data; boundary=something"
+                : "application/json",
+          },
+        })
+        .then((res) => {
+          if (res.status !== 200) {
+          }
+
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -68,7 +97,6 @@ export default function DynamicFormData(props: any) {
         </label>
         <input
           type="text"
-          key={index}
           id={"input_" + header}
           placeholder={"Insert " + header}
           {...register(header)}
@@ -84,7 +112,7 @@ export default function DynamicFormData(props: any) {
         action="post"
         onSubmit={handleSubmit(onSubmit)}
         className={
-          "grid p-4 border border-cyan-800 rounded-xl gap-4 grid-cols-" +
+          "grid p-4 border border-cyan-800 rounded-xl gap-4 grid-rows-" +
           headers.length
         }
       >

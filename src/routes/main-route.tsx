@@ -1,17 +1,16 @@
-import React from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Routes,
 } from "react-router-dom";
-import Dashboard from "../components/dashboard";
-import Data from "../components/data";
 import TableData from "../components/table";
 import User from "../components/user";
 import HomePage from "../pages/home";
 import LoginPage from "../pages/login";
 import axiosPublicClient from "../utils/services/axiosPublicClient";
+import CreateBookForm from "../pages/form/create-book";
+import Dashboard from "../pages/home/dashboard";
+import Data from "../pages/home/data";
 
 const MainRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -24,20 +23,21 @@ const MainRouter = createBrowserRouter(
           <Route
             path=":entity"
             element={<TableData></TableData>}
-            loader={(params: any) => {
-              return axiosPublicClient
-                .get(`/${params.params.entity}/`)
-                .then((res) => {
-                  if (res.status === 404) {
-                    throw new Response("Not Found", { status: 404 });
-                  }
-
-                  return res;
-                });
+            loader={async (params: any) => {
+              const res = await axiosPublicClient.get(
+                `/${params.params.entity}/search?name=&pageNumber=1&pageSize=5`
+              );
+              if (res.status === 404) {
+                throw new Response("Not Found", { status: 404 });
+              }
+              return res;
             }}
           ></Route>
         </Route>
         <Route path="/home/users" element={<User />}></Route>
+      </Route>
+      <Route path="/forms" element={<HomePage></HomePage>}>
+        <Route path="/forms/create-book" element={<CreateBookForm />}></Route>
       </Route>
     </Route>
   )
