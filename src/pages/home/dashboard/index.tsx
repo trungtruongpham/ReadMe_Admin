@@ -1,56 +1,102 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axiosPrivateClient from "../../../utils/services/axiosPrivateClient";
+
+class Entity {
+  entityName: string;
+  path: string;
+
+  constructor() {
+    this.entityName = "";
+    this.path = "";
+  }
+}
+
+const itemsDashboard = [
+  {
+    entityName: "Book",
+    path: "Book",
+  },
+  {
+    entityName: "BookTag",
+    path: "book-tag",
+  },
+  {
+    entityName: "BookCategory",
+    path: "book-category",
+  },
+  {
+    entityName: "Author",
+    path: "author",
+  },
+  {
+    entityName: "AppInfo",
+    path: "app-info",
+  },
+  {
+    entityName: "Chapter",
+    path: "Chapter",
+  },
+  {
+    entityName: "Category",
+    path: "Category",
+  },
+  {
+    entityName: "Image",
+    path: "Image",
+  },
+  {
+    entityName: "Status",
+    path: "Status",
+  },
+  {
+    entityName: "Tag",
+    path: "Tag",
+  },
+  {
+    entityName: "Quote",
+    path: "Quote",
+  },
+];
 
 export default function Dashboard() {
-  const itemsDashboard = [
-    {
-      "entityName": "Book",
-      "path": "Book"
-    },
-    {
-      "entityName": "BookTag",
-      "path":"book-tag"
-    },
-    {
-      "entityName": "BookCategory",
-      "path":"book-category"
-    },
-    {
-      "entityName": "Author",
-      "path":"author"
-    },
-    {
-      "entityName": "AppInfo",
-      "path":"app-info"
-    },
-    {
-      "entityName": "Chapter",
-      "path":"Chapter"
-    },
-    {
-      "entityName": "Category",
-      "path":"Category"
-    },
-    {
-      "entityName": "Image",
-      "path":"Image"
-    },
-    {
-      "entityName": "Status",
-      "path":"Status"
-    },
-    {
-      "entityName": "Tag",
-      "path":"Tag"
-    },
-    {
-      "entityName": "Quote",
-      "path":"Quote"
-    },
-  ]
-  
-  const listItemRender = itemsDashboard.map((item, index) => {
+  const [entityList, setEntityList] = useState<Entity[]>(itemsDashboard);
+
+  const convertToKebabCase = (text: string): string => {
+    return text
+      .replace(/([a-z])([A-Z])/g, "$1-$2") // Insert hyphen between lowercase and uppercase letters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .toLowerCase(); // Convert to lowercase
+  };
+
+  useEffect(() => {
+    var entityFromBE: Entity[] = [];
+
+    axiosPrivateClient.get("admin/entity").then((data) => {
+      data.data.forEach((entityData: any) => {
+        const convertedEntity = new Entity();
+
+        // Convert the required properties from `BookAuthor` to `book-author`
+        convertedEntity.path = convertToKebabCase(entityData);
+
+        // Assign other properties as needed
+        convertedEntity.entityName = entityData;
+
+        entityFromBE.push(convertedEntity);
+      });
+
+      setEntityList(entityFromBE);
+    });
+
+  }, [entityList.length]);
+
+  const listItemRender = entityList.map((item, index) => {
     return (
-      <Link key={index} className="bg-slate-400 border rounded-md p-2" to={"/home/data/" + item.path.toLowerCase()}>
+      <Link
+        key={index}
+        className="bg-slate-400 border rounded-md p-2"
+        to={"/home/data/" + item.path.toLowerCase()}
+      >
         {item.entityName}
       </Link>
     );

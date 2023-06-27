@@ -6,10 +6,11 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import Logo from "../../assets/read.png";
 import LogoDark from "../../assets/read.png";
 import { Link } from "react-router-dom";
-import Breadcrumb from "../../components/Breadcrumb";
-import { log } from "console";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function LoginPage() {
+  const { login } = useAuth();
+
   useEffect(() => {
     window.localStorage.clear();
   }, []);
@@ -22,15 +23,17 @@ export default function LoginPage() {
   } = useForm<any>();
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
     axiosPublicClient
       .post("/auth/login", {
         username: data.username,
         password: data.password,
       })
       .then((res) => {
-        localStorage.setItem("token", res.data.accessToken);
-        window.location.href = "/home/dashboard";
+        login({
+          token: res.data.accessToken,
+          expiration: res.data.expiration,
+          refreshToken: res.data.refreshToken
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -39,14 +42,21 @@ export default function LoginPage() {
 
   return (
     <DefaultLayout>
-      {/* <Breadcrumb pageName="Sign In" /> */}
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
               <Link className="mb-5.5 inline-block" to="/">
-                <img className="hidden dark:block w-24 h-24" src={Logo} alt="Logo" />
-                <img className="dark:hidden  w-24 h-24" src={LogoDark} alt="Logo" />
+                <img
+                  className="hidden dark:block w-24 h-24"
+                  src={Logo}
+                  alt="Logo"
+                />
+                <img
+                  className="dark:hidden  w-24 h-24"
+                  src={LogoDark}
+                  alt="Logo"
+                />
               </Link>
 
               <p className="2xl:px-20">
@@ -323,3 +333,4 @@ export default function LoginPage() {
     </DefaultLayout>
   );
 }
+

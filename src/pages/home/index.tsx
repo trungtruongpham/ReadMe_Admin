@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import Menu from "../../components/menu";
 import DefaultLayout from "../../layout/DefaultLayout";
 
 export default function HomePage() {

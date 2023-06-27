@@ -56,7 +56,7 @@ export default function TableData() {
 
   const handleDeleteData = (id: string) => {
     axiosPrivateClient
-      .delete("/" + entity + "?id=" + id, {
+      .delete("/" + entity + "/" + id, {
         headers: {
           "Content-Type": "text/plain",
         },

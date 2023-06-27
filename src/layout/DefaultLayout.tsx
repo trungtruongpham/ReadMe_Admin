@@ -1,28 +1,26 @@
-import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import { useState } from "react";
+import Sidebar from "../components/Sidebar";
 
-const DefaultLayout = ({children} : any) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+const DefaultLayout = ({ children }: any) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className='dark:bg-boxdark-2 dark:text-bodydark'>
+    <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
-      <div className='flex h-screen overflow-hidden'>
+      <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
-        <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
+        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
           {/* <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
-            <div className='mx-auto max-w-screen-2xl'>
-              {children}
-            </div>
+            <div className="mx-auto max-w-screen-2xl">{children}</div>
           </main>
           {/* <!-- ===== Main Content End ===== --> */}
         </div>
@@ -30,7 +28,7 @@ const DefaultLayout = ({children} : any) => {
       </div>
       {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>
-  )
-}
+  );
+};
 
 export default DefaultLayout;

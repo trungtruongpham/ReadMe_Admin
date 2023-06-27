@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-const UseLocalStorage = (key: any, initialValue: any) => {
+const useLocalStorage = (key: any, initialValue: any) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -35,4 +35,4 @@ const UseLocalStorage = (key: any, initialValue: any) => {
   return [storedValue, setStoredValue]
 }
 
-export default UseLocalStorage;
+export default useLocalStorage;
