@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
 import axiosPublicClient from "../../utils/services/axiosPublicClient";
-import { useEffect } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Logo from "../../assets/read.png";
 import LogoDark from "../../assets/read.png";
@@ -10,10 +9,6 @@ import { useAuth } from "../../hooks/useAuth";
 
 export default function LoginPage() {
   const { login } = useAuth();
-
-  useEffect(() => {
-    window.localStorage.clear();
-  }, []);
 
   const {
     register,
