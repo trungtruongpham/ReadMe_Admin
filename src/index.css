@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 html{
   height: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -21,4 +24,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input[type="date"] ::-webkit-calendar-picker-indicator {
+  display: none !important;
+  -webkit-appearance: none !important;
 }

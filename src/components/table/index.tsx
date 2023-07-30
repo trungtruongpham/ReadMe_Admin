@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
-import axiosPrivateClient from "../../utils/services/axiosPrivateClient";
-import axiosPublicClient from "../../utils/services/axiosPublicClient";
+import axiosPrivateClient from "../../utils/services/axios/axiosPrivateClient";
+import axiosPublicClient from "../../utils/services/axios/axiosPublicClient";
 import DynamicFormData from "../form";
 import Popup from "../popupData";
 
 export default function TableData() {
   const loaderData = useLoaderData() as any;
+  const { entity } = useParams();
   const [isShowForm, setIsShowForm] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState(loaderData.data.items[0]);
   const [updateDataIndex, setUpdateDataIndex] = useState(0);
-  const { entity } = useParams();
   const [data, setData] = useState<any>();
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState<number>(
     loaderData.data.pageNumber
   );
-  type keys = keyof typeof loaderData.data.items[0];
-  const headers = Object.keys(loaderData.data.items[0]).sort();
+  const [headers, setHeaders] = useState(
+    loaderData.data.items.length === 0
+      ? []
+      : Object.keys(loaderData.data.items[0]).sort()
+  );
+
+  type keys = keyof (typeof loaderData.data.items)[0];
 
   useEffect(() => {
     axiosPublicClient
@@ -27,6 +32,7 @@ export default function TableData() {
       )
       .then((res) => {
         setData(res.data);
+        setHeaders(Object.keys(res.data.items[0]).sort());
       });
   }, [currentPage, searchValue]);
 
@@ -98,7 +104,9 @@ export default function TableData() {
             }
             key={index}
           >
-            <span className="items-center text-ellipsis max-h-100">{data[header as keys]}</span>
+            <span className="items-center text-ellipsis max-h-100">
+              {data[header as keys]}
+            </span>
             <Popup buttonText="Open">
               <p>{data[header as keys]}</p>
             </Popup>
@@ -176,6 +184,9 @@ export default function TableData() {
           isUpdate={isUpdate}
         ></DynamicFormData>
       )}
+
+      {loaderData && <p>There is no data to show.</p>}
+
       <table
         id="data-grid"
         className="border border-cyan-700 border-separate rounded-xl"

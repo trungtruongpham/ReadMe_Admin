@@ -268,13 +268,35 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/home/forms/form-layout"
+                              to="/home/forms/create-author"
                               className={({ isActive }) =>
                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                 (isActive && "!text-white")
                               }
                             >
-                              Form Layout
+                              Create Author
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/home/forms/create-category"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              Create Category
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/home/forms/create-music"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              Create Music
                             </NavLink>
                           </li>
                         </ul>

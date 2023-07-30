@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import axiosPrivateClient from "../../utils/services/axiosPrivateClient";
+import axiosPrivateClient from "../../utils/services/axios/axiosPrivateClient";
+import JsonToFormData from "../../utils/helpers/JsonToFormData";
+import { log } from "console";
 
 interface FormDataTrops {
   data: any;
@@ -25,7 +27,9 @@ export default function DynamicFormData(props: FormDataTrops) {
   });
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    const formData = jsonToFormData(data);
+    console.log(data);
+    
+    const formData = JsonToFormData(data);
 
     if (props.isUpdate) {
       axiosPrivateClient
@@ -73,19 +77,7 @@ export default function DynamicFormData(props: FormDataTrops) {
       reset();
     }
   });
-
-  function jsonToFormData(json: any) {
-    let formData = new FormData();
-    for (let key in json) {
-      if (json[key] instanceof FileList) {
-        formData.append(key, json[key][0]);
-      } else {
-        formData.append(key, json[key]);
-      }
-    }
-    return formData;
-  }
-
+  
   const inputForm = headers.map((header, index) => {
     return (
       <div className="flex space-x-2 w-full" key={index}>

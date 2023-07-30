@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axiosPrivateClient from "../../../utils/services/axiosPrivateClient";
+import axiosPrivateClient from "../../../utils/services/axios/axiosPrivateClient";
 
 class Entity {
   entityName: string;
@@ -87,7 +87,6 @@ export default function Dashboard() {
 
       setEntityList(entityFromBE);
     });
-
   }, [entityList.length]);
 
   const listItemRender = entityList.map((item, index) => {

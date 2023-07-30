@@ -8,17 +8,21 @@ import TableData from "../components/table";
 import User from "../components/user";
 import HomePage from "../pages/home";
 import LoginPage from "../pages/login";
-import axiosPublicClient from "../utils/services/axiosPublicClient";
+import axiosPublicClient from "../utils/services/axios/axiosPublicClient";
 import CreateBookForm from "../pages/form/create-book";
 import Dashboard from "../pages/home/dashboard";
 import Data from "../pages/home/data";
 import { AuthLayout } from "../layout/AuthLayout";
 import { ProtectedLayout } from "../layout/ProtectedLayout";
+import CreateAuthorForm from "../pages/form/create-author";
+import CreateCategoryForm from "../pages/form/create-category";
+import CreateMusicForm from "../pages/form/create-music";
 
 const getUserData = () =>
   new Promise((resolve) =>
     setTimeout(() => {
       const user = window.localStorage.getItem("user");
+
       resolve(user);
     }, 3000)
   );
@@ -55,6 +59,18 @@ const MainRouter = createBrowserRouter(
           <Route
             path="/home/forms/create-book"
             element={<CreateBookForm />}
+          ></Route>
+          <Route
+            path="/home/forms/create-author"
+            element={<CreateAuthorForm />}
+          ></Route>
+          <Route
+            path="/home/forms/create-category"
+            element={<CreateCategoryForm />}
+          ></Route>
+          <Route
+            path="/home/forms/create-music"
+            element={<CreateMusicForm />}
           ></Route>
         </Route>
       </Route>

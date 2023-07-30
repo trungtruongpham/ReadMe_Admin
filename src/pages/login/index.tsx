@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
-import axiosPublicClient from "../../utils/services/axiosPublicClient";
+import axiosPublicClient from "../../utils/services/axios/axiosPublicClient";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Logo from "../../assets/read.png";
 import LogoDark from "../../assets/read.png";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const {
     register,
@@ -24,10 +25,11 @@ export default function LoginPage() {
         password: data.password,
       })
       .then((res) => {
+        toast.success("Login success!");
         login({
           token: res.data.accessToken,
           expiration: res.data.expiration,
-          refreshToken: res.data.refreshToken
+          refreshToken: res.data.refreshToken,
         });
       })
       .catch((err) => {
@@ -328,4 +330,3 @@ export default function LoginPage() {
     </DefaultLayout>
   );
 }
-
