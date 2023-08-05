@@ -16,7 +16,10 @@ import { AuthLayout } from "../layout/AuthLayout";
 import { ProtectedLayout } from "../layout/ProtectedLayout";
 import CreateAuthorForm from "../pages/form/create-author";
 import CreateCategoryForm from "../pages/form/create-category";
-import CreateMusicForm from "../pages/form/create-music";
+import CreateChapterForm from "../pages/form/create-chapter";
+import UploadImageForm from "../pages/form/upload-image";
+import UploadMusicForm from "../pages/form/upload-music";
+import ErrorPage from "../pages/error";
 
 const getUserData = () =>
   new Promise((resolve) =>
@@ -31,6 +34,7 @@ const MainRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route
       element={<AuthLayout />}
+      errorElement={<ErrorPage />}
       loader={() => defer({ userPromise: getUserData() })}
     >
       <Route path="/" element={<LoginPage></LoginPage>}></Route>
@@ -61,6 +65,10 @@ const MainRouter = createBrowserRouter(
             element={<CreateBookForm />}
           ></Route>
           <Route
+            path="/home/forms/create-chapter"
+            element={<CreateChapterForm />}
+          ></Route>
+          <Route
             path="/home/forms/create-author"
             element={<CreateAuthorForm />}
           ></Route>
@@ -69,8 +77,12 @@ const MainRouter = createBrowserRouter(
             element={<CreateCategoryForm />}
           ></Route>
           <Route
-            path="/home/forms/create-music"
-            element={<CreateMusicForm />}
+            path="/home/forms/upload-music"
+            element={<UploadMusicForm />}
+          ></Route>
+          <Route
+            path="/home/forms/upload-image"
+            element={<UploadImageForm />}
           ></Route>
         </Route>
       </Route>

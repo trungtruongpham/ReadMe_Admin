@@ -23,8 +23,12 @@ axiosPrivateClient.interceptors.response.use(
   async (response: any) => {
     return response;
   },
+  
   async function (error: any) {
     const originalRequest = error.config;
+
+    console.log(error);
+    
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

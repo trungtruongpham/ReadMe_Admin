@@ -268,6 +268,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
+                              to="/home/forms/create-chapter"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              Create Chapter
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               to="/home/forms/create-author"
                               className={({ isActive }) =>
                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
@@ -290,13 +301,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/home/forms/create-music"
+                              to="/home/forms/upload-music"
                               className={({ isActive }) =>
                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                 (isActive && "!text-white")
                               }
                             >
-                              Create Music
+                              Upload Music
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/home/forms/upload-image"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              Upload Image
                             </NavLink>
                           </li>
                         </ul>

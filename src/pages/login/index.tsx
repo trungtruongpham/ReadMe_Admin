@@ -34,6 +34,7 @@ export default function LoginPage() {
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Login failed. Please check again your username and password.");
       });
   };
 

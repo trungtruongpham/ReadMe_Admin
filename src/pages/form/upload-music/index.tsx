@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosPrivateClient from "../../../utils/services/axios/axiosPrivateClient";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import toast from "react-hot-toast";
 import JsonToFormData from "../../../utils/helpers/JsonToFormData";
 
-export default function CreateMusicForm() {
+export default function UploadMusicForm() {
   const [fileUpload, setFileUpload] = useState<FileList>();
 
   const {
@@ -21,11 +21,11 @@ export default function CreateMusicForm() {
 
   const onSubmit: SubmitHandler<any> = (data) => {
     data.file = fileUpload;
-    JsonToFormData(data);
+    const formData = JsonToFormData(data);
     console.log(data);
 
     axiosPrivateClient
-      .post("/music", data, {
+      .post("/music", formData, {
         headers: {
           "Content-Type": "multipart/form-data; boundary=something",
         },
