@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import axiosPrivateClient from "../../../utils/services/axios/axiosPrivateClient";
 
 class Entity {
@@ -46,16 +46,8 @@ const itemsDashboard = [
     path: "Image",
   },
   {
-    entityName: "Status",
-    path: "Status",
-  },
-  {
     entityName: "Tag",
     path: "Tag",
-  },
-  {
-    entityName: "Quote",
-    path: "Quote",
   },
 ];
 
@@ -108,6 +100,7 @@ export default function Dashboard() {
       </div>
       <div className="grid grid-cols-4 grid-flow-row gap-4 mt-4">
         {listItemRender}
+        <Outlet/>
       </div>
     </>
   );

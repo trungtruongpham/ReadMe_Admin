@@ -20,6 +20,7 @@ import CreateChapterForm from "../pages/form/create-chapter";
 import UploadImageForm from "../pages/form/upload-image";
 import UploadMusicForm from "../pages/form/upload-music";
 import ErrorPage from "../pages/error";
+import axiosPrivateClient from "../utils/services/axios/axiosPrivateClient";
 
 const getUserData = () =>
   new Promise((resolve) =>
@@ -47,7 +48,7 @@ const MainRouter = createBrowserRouter(
               path=":entity"
               element={<TableData></TableData>}
               loader={async (params: any) => {
-                const res = await axiosPublicClient.get(
+                const res = await axiosPrivateClient.get(
                   `/${params.params.entity}/search?name=&pageNumber=1&pageSize=5`
                 );
                 if (res.status === 404) {
