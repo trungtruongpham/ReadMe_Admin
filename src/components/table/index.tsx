@@ -160,23 +160,23 @@ export default function TableData() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="space-x-4">
-                <input
-                    type="text"
-                    className="border p-2 rounded-xl focus:outline-none"
-                    name="name"
-                    id="data-name"
-                    placeholder="Name"
-                    value={searchValue}
-                    onChange={handleSearchValueChange}
-                />
-                <button
-                    className="border p-2 rounded-xl bg-slate-500"
-                    onClick={handleAddData}
-                >
-                    Add new data
-                </button>
-            </div>
+            {/*<div className="space-x-4">*/}
+            {/*    <input*/}
+            {/*        type="text"*/}
+            {/*        className="border p-2 rounded-xl focus:outline-none"*/}
+            {/*        name="name"*/}
+            {/*        id="data-name"*/}
+            {/*        placeholder="Name"*/}
+            {/*        value={searchValue}*/}
+            {/*        onChange={handleSearchValueChange}*/}
+            {/*    />*/}
+            {/*    <button*/}
+            {/*        className="border p-2 rounded-xl bg-slate-500"*/}
+            {/*        onClick={handleAddData}*/}
+            {/*    >*/}
+            {/*        Add new data*/}
+            {/*    </button>*/}
+            {/*</div>*/}
             {isShowForm && (
                 <DynamicFormData
                     data={formData}
